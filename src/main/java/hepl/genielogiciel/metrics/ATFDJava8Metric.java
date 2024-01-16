@@ -1,5 +1,6 @@
 package hepl.genielogiciel.metrics;
 
+import hepl.genielogiciel.antlr.Java8Parser;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.Map;
@@ -26,4 +27,16 @@ public class ATFDJava8Metric extends Java8Metric{
         super.calculate(tree, metrics);
     }
 
+    @Override
+    public void enterFieldAccess(Java8Parser.FieldAccessContext ctx) {
+        value++;
+    }
+
+    @Override
+    public void enterMethodInvocation(Java8Parser.MethodInvocationContext ctx) {
+        String methodName = ctx.methodName().toString();
+        if(methodName.startsWith("get") || methodName.startsWith("set")){
+            value++;
+        }
+    }
 }
