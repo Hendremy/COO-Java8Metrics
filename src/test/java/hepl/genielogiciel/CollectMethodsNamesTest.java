@@ -1,8 +1,6 @@
 package hepl.genielogiciel;
 
-import hepl.genielogiciel.antlr.Java8Lexer;
-import hepl.genielogiciel.antlr.Java8Parser;
-import hepl.genielogiciel.metrics.CollectMethodsNames;
+import hepl.genielogiciel.metrics.CollectMethodsNamesJava8Metric;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -15,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CollectMethodsNamesTest {
     ParseTree tree;
-    CollectMethodsNames listener = new CollectMethodsNames(null);
+    CollectMethodsNamesJava8Metric listener = new CollectMethodsNamesJava8Metric(null);
     @Before
     public void setUp() throws Exception {
         String javaClassContent =

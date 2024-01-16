@@ -2,14 +2,27 @@ package hepl.genielogiciel.metrics;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.util.Map;
+
 public class ATFDJava8Metric extends Java8Metric{
+
+    private final String name = "Access to Foreign Data";
+    private int value;
+
+    public ATFDJava8Metric(){
+        super();
+    }
 
     public ATFDJava8Metric(Java8Metric wrappee) {
         super(wrappee);
     }
 
-    public String calculate(ParseTree tree){
-        return "Helo";
+    @Override
+    public void calculate(ParseTree tree, Map<String, String> metrics){
+        value = 0;
+        walkTree(tree);
+        metrics.put(name, String.valueOf(value));
+        super.calculate(tree, metrics);
     }
 
 }

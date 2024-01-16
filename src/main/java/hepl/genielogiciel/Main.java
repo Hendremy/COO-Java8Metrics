@@ -1,32 +1,45 @@
 package hepl.genielogiciel;
 
-import hepl.genielogiciel.antlr.Java8Lexer;
-import hepl.genielogiciel.antlr.Java8Listener;
-import hepl.genielogiciel.antlr.Java8Parser;
+import hepl.genielogiciel.file.ClassReader;
+import hepl.genielogiciel.file.ClassReaderException;
+import hepl.genielogiciel.file.Java8ClassReader;
 import hepl.genielogiciel.metrics.ATFDJava8Metric;
+import hepl.genielogiciel.metrics.CollectMethodsNamesJava8Metric;
 import hepl.genielogiciel.metrics.Metric;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import hepl.genielogiciel.metrics.WMCJava8Metric;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        String javaClassContent =
-                "public class GreatClass { void greatJob(){} void littleJob(){} }";
-        Java8Lexer java8Lexer = new Java8Lexer
-                (CharStreams.fromString(javaClassContent));
-        CommonTokenStream tokens = new CommonTokenStream(java8Lexer);
-        Java8Parser parser = new Java8Parser(tokens);
-        ParseTree tree = parser.compilationUnit();
+        if(args.length < 1){
+            System.out.println("Please specify the path to the target Java class");
+        }else{
+            calcMetrics(args[0]);
+        }
+    }
+
+    private static void calcMetrics(String classPath){
+        String workingDir = System.getProperty("user.dir");
+        Path filePath = Paths.get(workingDir, classPath).toAbsolutePath();
+
+        ClassReader classReader = new Java8ClassReader();
         Map<String, String> metrics = new HashMap<>();
+        Metric metric = new ATFDJava8Metric(new WMCJava8Metric(new CollectMethodsNamesJava8Metric()));
 
-        Metric listener = new ATFDJava8Metric(null);
-        listener.calculate(tree, metrics);
+        try{
+            metric.calculate(classReader.read(filePath), metrics);
+            presentMetrics(metrics);
+        }catch(ClassReaderException ex){
+            System.out.println("Error while parsing file, check path or file integrity : " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
 
+    private static void presentMetrics(Map<String, String> metrics){
         for(var entry : metrics.entrySet()){
             String line = String.format("%s : %s", entry.getKey(), entry.getValue());
             System.out.println(line);

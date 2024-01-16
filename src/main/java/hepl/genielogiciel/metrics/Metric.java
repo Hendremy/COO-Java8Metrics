@@ -5,5 +5,5 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.util.Map;
 
 public interface Metric {
-    public void calculate(ParseTree tree, Map<String, String> metrics);
+    void calculate(ParseTree tree, Map<String, String> metrics);
 }
