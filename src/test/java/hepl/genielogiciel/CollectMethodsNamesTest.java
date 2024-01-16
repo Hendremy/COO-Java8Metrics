@@ -1,5 +1,7 @@
 package hepl.genielogiciel;
 
+import hepl.genielogiciel.antlr.Java8Lexer;
+import hepl.genielogiciel.antlr.Java8Parser;
 import hepl.genielogiciel.metrics.CollectMethodsNamesJava8Metric;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
