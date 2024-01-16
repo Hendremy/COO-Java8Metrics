@@ -18,14 +18,8 @@ public class CollectMethodsNames extends Java8Metric {
     }
 
     @Override
-    public void calculate(Map<String, String> metrics, ParseTree tree){
-        super.calculate(metrics, tree);
-    }
-
-
-    public String calculate(ParseTree tree){
-        this.walkTree(tree);
-        return "" ;
+    public void calculate(ParseTree tree, Map<String, String> metrics){
+        super.calculate(tree, metrics);
     }
 
     @Override

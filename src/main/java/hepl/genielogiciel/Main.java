@@ -24,12 +24,12 @@ public class Main {
         ParseTree tree = parser.compilationUnit();
         Map<String, String> metrics = new HashMap<>();
 
-        Metric listener = new ATFDJava8Metric();
-        listener.calculate(metrics, tree);
+        Metric listener = new ATFDJava8Metric(null);
+        listener.calculate(tree, metrics);
 
         for(var entry : metrics.entrySet()){
             String line = String.format("%s : %s", entry.getKey(), entry.getValue());
-            System.out.println();
+            System.out.println(line);
         }
     }
 }

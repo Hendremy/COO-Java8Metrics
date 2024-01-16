@@ -20,9 +20,9 @@ public abstract class Java8Metric extends Java8BaseListener implements Metric {
     }
 
     @Override
-    public void calculate(Map<String, String> metrics, ParseTree tree){
+    public void calculate(ParseTree tree, Map<String, String> metrics){
         if (wrappee != null){
-            this.wrappee.calculate(metrics, tree);
+            this.wrappee.calculate(tree, metrics);
         }
     }
 }
