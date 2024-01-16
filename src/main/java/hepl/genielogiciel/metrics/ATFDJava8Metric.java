@@ -14,15 +14,15 @@ public class ATFDJava8Metric extends Java8Metric{
         super();
     }
 
-    public ATFDJava8Metric(Java8Metric wrappee) {
+    public ATFDJava8Metric(Metric wrappee) {
         super(wrappee);
     }
 
     @Override
-    public void calculate(ParseTree tree, Map<String, String> metrics){
+    public void calculate(ParseTree tree, Map<String, Double> metrics){
         value = 0;
         walkTree(tree);
-        metrics.put(id, String.valueOf(value));
+        metrics.put(id, value);
         super.calculate(tree, metrics);
     }
 

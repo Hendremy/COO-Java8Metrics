@@ -8,13 +8,13 @@ import java.util.Map;
 
 public abstract class Java8Metric extends Java8BaseListener implements Metric {
 
-    protected Java8Metric wrappee;
+    protected Metric wrappee;
 
     public Java8Metric(){
         this.wrappee = null;
     }
 
-    public Java8Metric(Java8Metric wrappee){
+    public Java8Metric(Metric wrappee){
         this.wrappee = wrappee;
     }
 
@@ -24,7 +24,7 @@ public abstract class Java8Metric extends Java8BaseListener implements Metric {
     }
 
     @Override
-    public void calculate(ParseTree tree, Map<String, String> metrics){
+    public void calculate(ParseTree tree, Map<String, Double> metrics){
         if (wrappee != null){
             this.wrappee.calculate(tree, metrics);
         }

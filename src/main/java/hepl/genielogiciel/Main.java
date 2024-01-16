@@ -1,15 +1,14 @@
 package hepl.genielogiciel;
 
+import hepl.genielogiciel.cli.Presenter;
 import hepl.genielogiciel.file.*;
-import hepl.genielogiciel.metrics.ATFDJava8Metric;
-import hepl.genielogiciel.metrics.CollectMethodsNamesJava8Metric;
-import hepl.genielogiciel.metrics.Metric;
-import hepl.genielogiciel.metrics.WMCJava8Metric;
+import hepl.genielogiciel.metrics.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,33 +22,34 @@ public class Main {
     private static void calcMetrics(String pathToClass){
         String workingDir = System.getProperty("user.dir");
         Path classPath = Paths.get(workingDir, pathToClass).toAbsolutePath();
-        Path configPath = Paths.get(workingDir, "src/main/resources/config.ini").toAbsolutePath();
+        Path configPath = Paths.get("src/main/resources/config.ini").toAbsolutePath();
 
         ConfigReader configReader = new IniConfigReader();
         ClassReader classReader = new Java8ClassReader();
+        Java8MetricFactory metricFactory = new Java8MetricFactory();
+        Presenter presenter = new Presenter(System.out);
 
         try {
             Map<String, Double> config = configReader.read(configPath);
-            Map<String, String> metrics = new HashMap<>();
+            Map<String, Double> metrics = new HashMap<>();
 
-            Metric metric = new ATFDJava8Metric(new WMCJava8Metric(new CollectMethodsNamesJava8Metric()));
+            Metric metric = createMetrics(config.keySet(), metricFactory);
 
             metric.calculate(classReader.read(classPath), metrics);
-            presentMetrics(metrics);
-        }catch(ConfigReaderException ex){
-            System.out.println("Error while loading config file : " + ex.getMessage());
-            ex.printStackTrace();
-        }catch(ClassReaderException ex){
-            System.out.println("Error while parsing file, check path or file integrity : " + ex.getMessage());
-            ex.printStackTrace();
+            presenter.presentMetrics(metrics, config);
+        }catch(ConfigReaderException | ClassReaderException ex){
+            presenter.present(ex);
         }
     }
 
-    private static void presentMetrics(Map<String, String> metrics){
-        for(var entry : metrics.entrySet()){
-            String line = String.format("%s : %s", entry.getKey(), entry.getValue());
-            System.out.println(line);
+    private static Metric createMetrics(Set<String> metricNames, MetricFactory factory){
+        Metric metric = null;
+
+        for(String metricName : metricNames){
+            metric = factory.create(metricName, metric);
         }
+
+        return metric;
     }
 }
 

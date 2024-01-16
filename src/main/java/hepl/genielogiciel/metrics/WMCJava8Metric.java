@@ -7,22 +7,23 @@ import java.util.Map;
 
 public class WMCJava8Metric extends Java8Metric {
 
+    private final String id = "WMC";
     private final String name = "Weighted Method Count";
-    private int value;
+    private double value;
 
     public WMCJava8Metric(){
         super();
     }
 
-    public WMCJava8Metric(Java8Metric wrappee) {
+    public WMCJava8Metric(Metric wrappee) {
         super(wrappee);
     }
 
     @Override
-    public void calculate(ParseTree tree, Map<String, String> metrics){
+    public void calculate(ParseTree tree, Map<String, Double> metrics){
         value = 0;
         walkTree(tree);
-        metrics.put(name,String.valueOf(value));
+        metrics.put(id, value);
         super.calculate(tree, metrics);
     }
 
