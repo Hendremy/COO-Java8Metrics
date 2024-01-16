@@ -6,8 +6,9 @@ import java.util.Map;
 
 public class ATFDJava8Metric extends Java8Metric{
 
-    private final String name = "Access to Foreign Data";
-    private int value;
+    private final String id = "ATFD";
+    private final String description = "Access to Foreign Data";
+    private double value;
 
     public ATFDJava8Metric(){
         super();
@@ -21,7 +22,7 @@ public class ATFDJava8Metric extends Java8Metric{
     public void calculate(ParseTree tree, Map<String, String> metrics){
         value = 0;
         walkTree(tree);
-        metrics.put(name, String.valueOf(value));
+        metrics.put(id, String.valueOf(value));
         super.calculate(tree, metrics);
     }
 

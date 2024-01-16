@@ -1,8 +1,6 @@
 package hepl.genielogiciel;
 
-import hepl.genielogiciel.file.ClassReader;
-import hepl.genielogiciel.file.ClassReaderException;
-import hepl.genielogiciel.file.Java8ClassReader;
+import hepl.genielogiciel.file.*;
 import hepl.genielogiciel.metrics.ATFDJava8Metric;
 import hepl.genielogiciel.metrics.CollectMethodsNamesJava8Metric;
 import hepl.genielogiciel.metrics.Metric;
@@ -22,17 +20,25 @@ public class Main {
         }
     }
 
-    private static void calcMetrics(String classPath){
+    private static void calcMetrics(String pathToClass){
         String workingDir = System.getProperty("user.dir");
-        Path filePath = Paths.get(workingDir, classPath).toAbsolutePath();
+        Path classPath = Paths.get(workingDir, pathToClass).toAbsolutePath();
+        Path configPath = Paths.get(workingDir, "src/main/resources/config.ini").toAbsolutePath();
 
+        ConfigReader configReader = new IniConfigReader();
         ClassReader classReader = new Java8ClassReader();
-        Map<String, String> metrics = new HashMap<>();
-        Metric metric = new ATFDJava8Metric(new WMCJava8Metric(new CollectMethodsNamesJava8Metric()));
 
-        try{
-            metric.calculate(classReader.read(filePath), metrics);
+        try {
+            Map<String, Double> config = configReader.read(configPath);
+            Map<String, String> metrics = new HashMap<>();
+
+            Metric metric = new ATFDJava8Metric(new WMCJava8Metric(new CollectMethodsNamesJava8Metric()));
+
+            metric.calculate(classReader.read(classPath), metrics);
             presentMetrics(metrics);
+        }catch(ConfigReaderException ex){
+            System.out.println("Error while loading config file : " + ex.getMessage());
+            ex.printStackTrace();
         }catch(ClassReaderException ex){
             System.out.println("Error while parsing file, check path or file integrity : " + ex.getMessage());
             ex.printStackTrace();
