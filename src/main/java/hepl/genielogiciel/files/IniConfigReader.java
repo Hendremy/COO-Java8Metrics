@@ -1,4 +1,4 @@
-package hepl.genielogiciel.file;
+package hepl.genielogiciel.files;
 
 import java.io.BufferedReader;
 import java.io.IOException;

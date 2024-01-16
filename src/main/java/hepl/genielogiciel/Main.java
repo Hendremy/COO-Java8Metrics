@@ -2,14 +2,13 @@ package hepl.genielogiciel;
 
 import hepl.genielogiciel.cli.CliPresenter;
 import hepl.genielogiciel.cli.Presenter;
-import hepl.genielogiciel.file.*;
+import hepl.genielogiciel.files.*;
 import hepl.genielogiciel.metrics.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Main {
 
@@ -27,8 +26,8 @@ public class Main {
         Path configPath = Paths.get("src/main/resources/config.ini").toAbsolutePath();
         Map<String, Class<?>> availableMetrics = new HashMap<>()
         {{
-            put("ATFD", ATFDJava8Metric.class);
-            put("WMC", WMCJava8Metric.class);
+            put(ATFDJava8Metric.ID, ATFDJava8Metric.class);
+            put(WMCJava8Metric.ID, WMCJava8Metric.class);
         }};
 
         ConfigReader configReader = new IniConfigReader();
@@ -38,12 +37,12 @@ public class Main {
 
         try {
             Map<String, Double> config = configReader.read(configPath);
-            Map<String, Double> metrics = new HashMap<>();
+            Map<String, Double> metricValues = new HashMap<>();
 
             Metric metric = metricFactory.create(config.keySet());
+            metric.calculate(classReader.read(classPath), metricValues);
 
-            metric.calculate(classReader.read(classPath), metrics);
-            presenter.presentMetrics(metrics, config);
+            presenter.presentMetrics(metricValues, config, pathToClass);
         }catch(ConfigReaderException | ClassReaderException | MetricFactoryException ex){
             presenter.present(ex);
         }

@@ -1,4 +1,4 @@
-package hepl.genielogiciel.file;
+package hepl.genielogiciel.files;
 
 public class ConfigReaderException extends Exception{
     public ConfigReaderException(String message){

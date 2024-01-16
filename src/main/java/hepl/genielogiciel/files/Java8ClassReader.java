@@ -1,4 +1,4 @@
-package hepl.genielogiciel.file;
+package hepl.genielogiciel.files;
 
 import hepl.genielogiciel.antlr.Java8Lexer;
 import hepl.genielogiciel.antlr.Java8Parser;

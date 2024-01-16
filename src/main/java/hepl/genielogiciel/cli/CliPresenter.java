@@ -15,9 +15,15 @@ public class CliPresenter implements Presenter{
     private final String ANSI_RED = "\u001B[31m";
     private final String ANSI_RESET = "\u001B[0m";
 
-    public void presentMetrics(Map<String, Double> metrics, Map<String, Double> config){
+    @Override
+    public void presentMetrics(Map<String, Double> metrics, Map<String, Double> maxValues, String filePath) {
+        out.println("\n\n" + filePath);
+        presentMetrics(metrics, maxValues);
+    }
+
+    public void presentMetrics(Map<String, Double> metrics, Map<String, Double> maxValues){
         for(String metricId : metrics.keySet()){
-            presentMetric(metricId, metrics.get(metricId), config.get(metricId));
+            presentMetric(metricId, metrics.get(metricId), maxValues.get(metricId));
         }
     }
 
