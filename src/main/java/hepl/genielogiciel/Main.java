@@ -1,5 +1,6 @@
 package hepl.genielogiciel;
 
+import hepl.genielogiciel.cli.CliPresenter;
 import hepl.genielogiciel.cli.Presenter;
 import hepl.genielogiciel.file.*;
 import hepl.genielogiciel.metrics.*;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Main {
+
     public static void main(String[] args) {
         if(args.length < 1){
             System.out.println("Please specify the path to the target Java class");
@@ -26,8 +28,8 @@ public class Main {
 
         ConfigReader configReader = new IniConfigReader();
         ClassReader classReader = new Java8ClassReader();
-        Java8MetricFactory metricFactory = new Java8MetricFactory();
-        Presenter presenter = new Presenter(System.out);
+        MetricFactory metricFactory = new Java8MetricFactory();
+        Presenter presenter = new CliPresenter(System.out);
 
         try {
             Map<String, Double> config = configReader.read(configPath);
@@ -37,12 +39,12 @@ public class Main {
 
             metric.calculate(classReader.read(classPath), metrics);
             presenter.presentMetrics(metrics, config);
-        }catch(ConfigReaderException | ClassReaderException ex){
+        }catch(ConfigReaderException | ClassReaderException | MetricFactoryException ex){
             presenter.present(ex);
         }
     }
 
-    private static Metric createMetrics(Set<String> metricNames, MetricFactory factory){
+    private static Metric createMetrics(Set<String> metricNames, MetricFactory factory) throws MetricFactoryException{
         Metric metric = null;
 
         for(String metricName : metricNames){

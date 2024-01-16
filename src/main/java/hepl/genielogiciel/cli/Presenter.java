@@ -1,42 +1,9 @@
 package hepl.genielogiciel.cli;
 
-import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.Map;
 
-public class Presenter {
-
-    private final PrintStream out;
-
-    public Presenter(PrintStream out){
-        this.out = out;
-    }
-    private final String ANSI_YELLOW = "\u001B[33m";
-    private final String ANSI_RED = "\u001B[31m";
-    private final String ANSI_RESET = "\u001B[0m";
-
-    public void presentMetrics(Map<String, Double> metrics, Map<String, Double> config){
-        for(String metricId : metrics.keySet()){
-            presentMetric(metricId, metrics.get(metricId), config.get(metricId));
-        }
-    }
-
-    public void presentMetric(String id, double actualValue, double maxValue){
-        String line;
-        if(actualValue <= (maxValue * 80/100)){
-            line = String.format("%s : %.2f", id, actualValue);
-        }else if(actualValue <= maxValue){
-            line = String.format("%s%s : %.2f       < ! > maximum %.2f < ! >",ANSI_YELLOW, id, actualValue, maxValue);
-        }else{
-            line = String.format("%s%s : %.2f       / ! \\ maximum %.2f / ! \\",ANSI_RED, id, actualValue, maxValue);
-        }
-        line += ANSI_RESET;
-        out.println(line);
-    }
-
-    public void present(Exception ex){
-        out.printf("%s : %s", ex.getMessage(), Arrays.toString(ex.getStackTrace()));
-    }
-
-
+public interface Presenter {
+    void presentMetrics(Map<String, Double> metrics, Map<String, Double> maxValues);
+    void presentMetric(String id, double value, double maxValue);
+    void present(Exception ex);
 }
