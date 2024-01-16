@@ -25,33 +25,28 @@ public class Main {
         String workingDir = System.getProperty("user.dir");
         Path classPath = Paths.get(workingDir, pathToClass).toAbsolutePath();
         Path configPath = Paths.get("src/main/resources/config.ini").toAbsolutePath();
+        Map<String, Class<?>> availableMetrics = new HashMap<>()
+        {{
+            put("ATFD", ATFDJava8Metric.class);
+            put("WMC", WMCJava8Metric.class);
+        }};
 
         ConfigReader configReader = new IniConfigReader();
         ClassReader classReader = new Java8ClassReader();
-        MetricFactory metricFactory = new Java8MetricFactory();
+        MetricFactory metricFactory = new Java8MetricFactory(availableMetrics);
         Presenter presenter = new CliPresenter(System.out);
 
         try {
             Map<String, Double> config = configReader.read(configPath);
             Map<String, Double> metrics = new HashMap<>();
 
-            Metric metric = createMetrics(config.keySet(), metricFactory);
+            Metric metric = metricFactory.create(config.keySet());
 
             metric.calculate(classReader.read(classPath), metrics);
             presenter.presentMetrics(metrics, config);
         }catch(ConfigReaderException | ClassReaderException | MetricFactoryException ex){
             presenter.present(ex);
         }
-    }
-
-    private static Metric createMetrics(Set<String> metricNames, MetricFactory factory) throws MetricFactoryException{
-        Metric metric = null;
-
-        for(String metricName : metricNames){
-            metric = factory.create(metricName, metric);
-        }
-
-        return metric;
     }
 }
 

@@ -7,12 +7,8 @@ import java.util.Map;
 public class Java8MetricFactory implements MetricFactory{
 
     private final Map<String, Class<?>> availableMetrics;
-    public Java8MetricFactory(){
-        availableMetrics = new HashMap<>()
-        {{
-         put("ATFD", ATFDJava8Metric.class);
-         put("WMC", WMCJava8Metric.class);
-        }};
+    public Java8MetricFactory(Map<String, Class<?>> availableMetrics){
+        this.availableMetrics = availableMetrics;
     }
     public Metric create(String metricType) throws MetricFactoryException {
         return create(metricType, null);
@@ -32,6 +28,14 @@ public class Java8MetricFactory implements MetricFactory{
             throw new MetricFactoryException(ex.getMessage());
         }
 
+        return metric;
+    }
+
+    public Metric create(Iterable<String> ids) throws MetricFactoryException{
+        Metric metric = null;
+        for(String id : ids){
+            metric = create(id, metric);
+        }
         return metric;
     }
 }
