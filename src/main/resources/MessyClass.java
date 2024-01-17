@@ -8,5 +8,11 @@ public class MessyClass {
     void superMessyJob(){
         int i = great.getValue();
         String s = great.getName();
+        great.value = 5;
+        int a = 5;
+    }
+
+    int testFun(){
+        return 0;
     }
 }
