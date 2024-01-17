@@ -55,6 +55,7 @@ public class Main {
             for(Path classPath : classPaths){
                 calcMetrics(classPath, metric, config);
             }
+
         }catch (MetricFactoryException | ConfigReaderException ex){
             presenter.present(ex);
         }
