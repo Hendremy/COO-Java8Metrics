@@ -43,4 +43,8 @@ public class CliPresenter implements Presenter{
     public void present(Exception ex){
         out.printf("%s%s : %s%s", ANSI_RED, ex.getMessage(), Arrays.toString(ex.getStackTrace()), ANSI_RESET);
     }
+
+    public void present(String str){
+        out.println(str);
+    }
 }

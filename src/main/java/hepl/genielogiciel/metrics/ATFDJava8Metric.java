@@ -37,22 +37,22 @@ public class ATFDJava8Metric extends Java8Metric{
     public void enterElementValuePair(Java8Parser.ElementValuePairContext ctx) {
         TerminalNode id = ctx.Identifier();
         String s = id.toString();
-        System.out.println(s);
+        // System.out.println(s);
     }
 
     @Override
     public void enterFieldAccess(Java8Parser.FieldAccessContext ctx) {
         var s = ctx.Identifier();
-        //var p = ctx.primary();
-        System.out.println(s.getText());
-        //System.out.println(p.getText());
+        // var p = ctx.primary();
+        // System.out.println(s.getText());
+        // System.out.println(p.getText());
     }
 
     @Override
     public void enterMethodInvocation(Java8Parser.MethodInvocationContext ctx) {
         var methodNameCtx = ctx.methodName();
         String methodName = methodNameCtx == null ? "" : methodNameCtx.toString();
-        System.out.println(methodName);
+        //System.out.println(methodName);
         if(methodName.startsWith("get") || methodName.startsWith("set")){
             value++;
         }

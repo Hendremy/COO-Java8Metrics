@@ -8,9 +8,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Main {
@@ -28,10 +26,12 @@ public class Main {
     private final ClassReader classReader;
     private final Map<String, Class<?>> availableMetrics;
     private final MetricFactory metricFactory;
+    private final FileFetcher fileFetcher;
 
     private Main(){
         presenter = new CliPresenter(System.out);
         configReader = new IniConfigReader();
+        fileFetcher = new FileFetcher();
         classReader = new Java8ClassReader();
         availableMetrics = new HashMap<>()
         {{
@@ -46,18 +46,22 @@ public class Main {
         String workingDir = System.getProperty("user.dir");
         Path projectAbsPath = Paths.get(workingDir, projectPath).toAbsolutePath();
 
-        Path[] classPaths = new Path[]{};
+        Iterable<Path> classPaths = fileFetcher.fetch(projectAbsPath, ".java");
 
-        try{
-            Map<String, Double> config = configReader.read(configPath);
-            Metric metric = metricFactory.create(config.keySet());
+        if(classPaths.iterator().hasNext()){
+            try{
+                Map<String, Double> config = configReader.read(configPath);
+                Metric metric = metricFactory.create(config.keySet());
 
-            for(Path classPath : classPaths){
-                calcMetrics(classPath, metric, config);
+                for(Path classPath : classPaths){
+                    calcMetrics(classPath, metric, config);
+                }
+
+            }catch (MetricFactoryException | ConfigReaderException ex){
+                presenter.present(ex);
             }
-
-        }catch (MetricFactoryException | ConfigReaderException ex){
-            presenter.present(ex);
+        }else{
+            presenter.present("No java file found in project " + projectPath);
         }
     }
 

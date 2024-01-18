@@ -14,7 +14,7 @@ public class FileFetcher implements FileVisitor {
     private List<Path> files;
     private String extension;
 
-    public Path[] fetch(Path start, String extension){
+    public Iterable<Path> fetch(Path start, String extension){
         files = new ArrayList<>();
         this.extension = extension;
         try{
@@ -22,26 +22,30 @@ public class FileFetcher implements FileVisitor {
         }catch(IOException ex){
 
         }
-        return new Path[]{};
+        return files;
     }
 
     @Override
     public FileVisitResult preVisitDirectory(Object o, BasicFileAttributes basicFileAttributes) throws IOException {
-        return null;
+        return FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(Object o, BasicFileAttributes basicFileAttributes) throws IOException {
-        return null;
+        Path path = (Path) o;
+        if (path.toString().endsWith(extension)){
+            files.add(path);
+        }
+        return FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFileFailed(Object o, IOException e) throws IOException {
-        return null;
+        return FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult postVisitDirectory(Object o, IOException e) throws IOException {
-        return null;
+        return FileVisitResult.CONTINUE;
     }
 }
