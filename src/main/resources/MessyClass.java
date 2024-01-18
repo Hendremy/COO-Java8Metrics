@@ -1,3 +1,5 @@
+import GreatClass;
+
 public class MessyClass {
     private GreatClass great;
     void messyJob(){
@@ -8,8 +10,8 @@ public class MessyClass {
     void superMessyJob(){
         int i = great.getValue();
         String s = great.getName();
+        great.setName("lol");
         great.value = 5;
-        int a = 5;
     }
 
     int testFun(){
