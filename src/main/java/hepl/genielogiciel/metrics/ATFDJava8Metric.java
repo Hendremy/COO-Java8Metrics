@@ -2,13 +2,12 @@ package hepl.genielogiciel.metrics;
 
 import hepl.genielogiciel.antlr.Java8Parser;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ATFDJava8Metric extends Java8Metric{
+public class ATFDJava8Metric extends Java8BaseMetric {
 
     public final static String ID = "ATFD";
     private final String description = "Access to Foreign Data";

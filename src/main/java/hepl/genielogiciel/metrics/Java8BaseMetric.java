@@ -6,15 +6,15 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.util.Map;
 
-public abstract class Java8Metric extends Java8BaseListener implements Metric {
+public abstract class Java8BaseMetric extends Java8BaseListener implements Metric {
 
     protected Metric wrappee;
 
-    public Java8Metric(){
+    public Java8BaseMetric(){
         this.wrappee = null;
     }
 
-    public Java8Metric(Metric wrappee){
+    public Java8BaseMetric(Metric wrappee){
         this.wrappee = wrappee;
     }
 

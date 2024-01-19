@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.Map;
 
-public class WMCJava8Metric extends Java8Metric {
+public class WMCJava8Metric extends Java8BaseMetric {
 
     public final static String ID = "WMC";
     private final String description = "Weighted Method Count";
