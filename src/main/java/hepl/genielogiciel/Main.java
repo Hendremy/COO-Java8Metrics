@@ -42,9 +42,9 @@ public class Main {
     }
 
     private void scanProject(String projectPath){
-        Path configPath = Paths.get("src/main/resources/config.ini").toAbsolutePath();
+        String configFileName = "config.ini";
         String workingDir = System.getProperty("user.dir");
-        Path projectAbsPath = Paths.get(workingDir, projectPath).toAbsolutePath();
+        Path projectAbsPath = Paths.get(workingDir).resolve(projectPath).toAbsolutePath();
 
         Iterable<Path> classPaths = fileFetcher.fetch(projectAbsPath, ".java");
 
@@ -52,7 +52,7 @@ public class Main {
             presenter.present("Scanning files in " + projectPath);
 
             try{
-                Map<String, Double> config = configReader.read(configPath);
+                Map<String, Double> config = configReader.read(configFileName);
                 Metric metric = metricFactory.create(config.keySet());
 
                 for(Path classPath : classPaths){

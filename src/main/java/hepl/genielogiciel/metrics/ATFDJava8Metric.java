@@ -59,11 +59,13 @@ public class ATFDJava8Metric extends Java8Metric{
     // Only getter/setter used on statement, example: object.getName();
     public void enterMethodInvocation_lfno_primary(Java8Parser.MethodInvocation_lfno_primaryContext ctx) {
         Java8Parser.TypeNameContext typeNameContext = ctx.typeName();
-        String typeName = typeNameContext.getText();
-        if(!typeName.equals("this") && ctx.getChildCount() >= 3){
-            String methodName = ctx.getChild(2).getText();
-            if(isGetterOrSetter(methodName)){
-                updateMetric(typeName + "." + methodName);
+        if(typeNameContext != null) {
+            String typeName = typeNameContext.getText();
+            if (!typeName.equals("this") && ctx.getChildCount() >= 3) {
+                String methodName = ctx.getChild(2).getText();
+                if (isGetterOrSetter(methodName)) {
+                    updateMetric(typeName + "." + methodName);
+                }
             }
         }
     }

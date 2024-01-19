@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface ConfigReader {
 
-    Map<String, Double> read(Path filePath) throws ConfigReaderException;
+    Map<String, Double> read(String fileName) throws ConfigReaderException;
 }

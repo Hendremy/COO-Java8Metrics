@@ -1,7 +1,6 @@
 package hepl.genielogiciel.files;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -9,10 +8,10 @@ import java.util.Map;
 
 public class IniConfigReader implements ConfigReader{
     @Override
-    public Map<String, Double> read(Path filePath) throws ConfigReaderException{
+    public Map<String, Double> read(String fileName) throws ConfigReaderException{
         Map<String, Double> config = new HashMap<>();
 
-        try(BufferedReader reader = Files.newBufferedReader(filePath)){
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(loadResource(fileName)))){
             String line;
             String[] splitLine;
             while(reader.ready()){
@@ -24,5 +23,9 @@ public class IniConfigReader implements ConfigReader{
             throw new ConfigReaderException(ex.getMessage());
         }
         return config;
+    }
+
+    private InputStream loadResource(String file){
+        return this.getClass().getClassLoader().getResourceAsStream(file);
     }
 }
