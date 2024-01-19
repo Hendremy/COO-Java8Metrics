@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="COO-Java8Metrics:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/COO_Java8Metrics_jar</output-path>
+    <root id="archive" name="COO-Java8Metrics.jar">
+      <element id="module-output" name="COO-Java8Metrics" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.13.1/antlr4-runtime-4.13.1.jar" path-in-jar="/" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/config.ini" />
+    </root>
+  </artifact>
+</component>

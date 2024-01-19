@@ -49,6 +49,8 @@ public class Main {
         Iterable<Path> classPaths = fileFetcher.fetch(projectAbsPath, ".java");
 
         if(classPaths.iterator().hasNext()){
+            presenter.present("Scanning files in " + projectPath);
+
             try{
                 Map<String, Double> config = configReader.read(configPath);
                 Metric metric = metricFactory.create(config.keySet());

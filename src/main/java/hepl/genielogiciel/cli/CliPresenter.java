@@ -31,7 +31,7 @@ public class CliPresenter implements Presenter{
         String line;
         if(actualValue <= (maxValue * 80/100)){
             line = String.format("%s : %.2f", id, actualValue);
-        }else if(actualValue <= maxValue){
+        }else if(actualValue < maxValue){
             line = String.format("%s%s : %.2f       < ! > maximum %.2f < ! >",ANSI_YELLOW, id, actualValue, maxValue);
         }else{
             line = String.format("%s%s : %.2f       / ! \\ maximum %.2f / ! \\",ANSI_RED, id, actualValue, maxValue);

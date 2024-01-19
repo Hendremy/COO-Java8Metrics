@@ -1,5 +1,5 @@
 public class GreatClass {
-    /*public int value;
+    public int value;
     public String name;
 
     String getName(){
@@ -21,5 +21,5 @@ public class GreatClass {
 
     void littleJob(){
         System.out.println("Small");
-    }*/
+    }
 }
