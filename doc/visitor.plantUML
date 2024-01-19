@@ -1,0 +1,32 @@
+@startuml visitor
+
+abstract Java8BaseListener{
+    --
+    + void enterMethodDeclarator(MethodDeclaratorContext ctx)
+    + void enterExpressionName(ExpressionNameContext ctx)
+    . . .
+    + void enterMethodInvocation_lfno_primary(Java8Parser.MethodInvocation_lfno_primaryContext ctx)
+}
+
+abstract Java8BaseMetric {
+
+}
+
+class WMCJava8Metric{
+    + void enterMethodDeclarator(MethodDeclarator ctx)
+}
+
+class ATFDJava8Metric{
+    --
+    + void enterExpressionName(ExpressionNameContext ctx)
+    + void enterMethodInvocation(MethodInvocationContext ctx)
+    ...
+    + void enterMethodInvocation_lfno_primary(Java8Parser.MethodInvocation_lfno_primaryContext ctx)
+}
+
+Java8BaseListener <|-- Java8BaseMetric
+
+Java8BaseMetric <|-- WMCJava8Metric
+Java8BaseMetric <|-- ATFDJava8Metric
+
+@enduml

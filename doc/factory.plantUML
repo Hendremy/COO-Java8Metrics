@@ -1,0 +1,35 @@
+@startuml factory
+
+interface MetricFactory{
+    + Metric create(String id)
+    + Metric create(String id, Metric wrappee)
+    + Metric create(Iterable<String> ids)
+}
+
+abstract Java8MetricFactory{
+    + Metric create(String id)
+    + Metric create(String id, Metric wrappee)
+    + Metric create(Iterable<String> ids)
+}
+
+class Main{
+
+}
+
+
+class WMCJava8Metric{
+    + void calculate(ParseTree tree, Map<String, Double> metrics)
+}
+
+class ATFDJava8Metric{
+    + void calculate(ParseTree tree, Map<String, Double> metrics)
+}
+
+MetricFactory <|-- Java8MetricFactory
+
+Main --> MetricFactory
+
+Java8MetricFactory --> ATFDJava8Metric
+Java8MetricFactory --> WMCJava8Metric
+
+@enduml

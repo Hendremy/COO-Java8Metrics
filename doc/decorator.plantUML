@@ -1,0 +1,34 @@
+@startuml decorator
+
+interface Metric{
+    + void calculate(ParseTree tree, Map<String, Double> metrics)
+}
+
+abstract Java8BaseMetric{
+    + Java8Metric()
+    + Java8Metric(Metric wrappee)
+    + void calculate(ParseTree tree, Map<String, Double> metrics)
+    ~ void walkTree(ParseTree tree)
+}
+
+abstract Java8BaseListener{
+
+}
+
+class WMCJava8Metric{
+    + void calculate(ParseTree tree, Map<String, Double> metrics)
+}
+
+class ATFDJava8Metric{
+    + void calculate(ParseTree tree, Map<String, Double> metrics)
+}
+
+Metric <|-- Java8BaseMetric
+
+Java8BaseListener <|-- Java8BaseMetric
+
+Java8BaseMetric <|-- WMCJava8Metric
+
+Java8BaseMetric <|-- ATFDJava8Metric
+
+@enduml
